@@ -9,7 +9,7 @@ module.exports = {
         {
             name: 'giveaway',
             description: 'The giveaway to end (message ID)',
-            type: 'INTEGER',
+            type: 'STRING',
             required: true
         },
         {

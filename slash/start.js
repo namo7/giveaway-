@@ -32,7 +32,7 @@ module.exports = {
     },
     {
       name: 'role',
-      description: 'The role which would recieve bonus entries',
+      description: 'Name of the role which would recieve bonus entries',
       type: 'STRING',
       required: false
     },
@@ -45,6 +45,12 @@ module.exports = {
     {
       name: 'invite',
       description: 'Invite of the server you want to add as giveaway joining requirement',
+      type: 'STRING',
+      required: false
+    },
+    {
+      name: 'rolereq',
+      description: 'Name of the role you want to add as giveaway joining requirement',
       type: 'STRING',
       required: false
     },
@@ -73,6 +79,7 @@ module.exports = {
     }
     const bonusRole = interaction.options.getString('role')
     const bonusEntries = interaction.options.getInteger('amount')
+    let rolereq = interaction.options.getString('rolereq')
     let invite = interaction.options.getString('invite')
 
     if (bonusRole) {
@@ -86,12 +93,27 @@ module.exports = {
         });
       }
     }
-    if (invite) {
-      client.fetchInvite(invite).then(async invitex => {
+
+let reqrole;
+    if(rolereq){
+      const x = await interaction.guild.roles.cache.find(
+        n => n.name === `${rolereq}`
+      );
+      reqrole = x 
+      if (!x) {
+        return interaction.reply({
+          content: ':x: No such role found!',
+          ephemeral: true
+        });
+      }
+    }
+    let reqinvite;
+    if(invite){
+     await client.fetchInvite(invite).then(invitex => {
         let client_is_in_server = client.guilds.cache.get(
           invitex.guild.id
-        );
-        extraData = invitex.guild.id;
+        )
+        reqinvite = invitex
         if (!client_is_in_server) {
           return interaction.reply({
             embeds: [{
@@ -110,10 +132,14 @@ module.exports = {
                 text: "Server Check"
               }
             }]
-          });
-
+          })
         }
+      })
+     }
         interaction.deferReply({ ephemeral: true })
+
+
+        // start giveaway
         await client.giveawaysManager.start(giveawayChannel, {
           // The giveaway duration
           duration: ms(giveawayDuration),
@@ -135,7 +161,8 @@ module.exports = {
           // Messages
           messages,
           extraData: {
-            server: invitex.guild.id
+            server: reqinvite == null ? "null" : reqinvite.guild.id,
+            role: reqrole == null ? "null" : reqrole.id,
           }
         });
         interaction.editReply({
@@ -143,40 +170,7 @@ module.exports = {
             `Giveaway started in ${giveawayChannel}!`,
           ephemeral: true
         })
-      })
-    } else {
-      // Start the giveaway
-      await client.giveawaysManager.start(giveawayChannel, {
-        // The giveaway duration
-        duration: ms(giveawayDuration),
-        // The giveaway prize
-        prize: giveawayPrize,
-        // The giveaway winner count
-        winnerCount: parseInt(giveawayWinnerCount),
-        // BonusEntries If Provided
-
-        bonusEntries: [
-          {
-            // Members who have the role which is assigned to "rolename" get the amount of bonus entries which are assigned to "BonusEntries"
-            bonus: new Function(
-              "member",
-              `member.roles.cache.some((r) => r.name === \'${bonusRole}\') ? ${bonusEntries}: null`
-            ),
-            cumulative: false
-          }
-        ],
-        // Messages
-        messages
-      });
-      interaction.reply({
-        content:
-          `Giveaway started in ${giveawayChannel}!`,
-        ephemeral: true
-      });
-    }
-
-
-
+        
     if (bonusRole) {
       const mentionfetch = await interaction.guild.roles.cache.find(
         n => n.name === `${bonusRole}`
