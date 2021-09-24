@@ -10,7 +10,7 @@ module.exports = {
         .setDescription('**Please Select a category to view all its commands**')
         .addField(`Links:`,`- [Youtube Channel](https://youtube.com/c/Zerosync)\n- [Discord Server](https://discord.gg/ARu4hr6hJw)\n- [GitHub](https://github.com/ZeroDiscord/Giveaway)`,true)
         .setTimestamp()
-        .setFooter(`Requested by ${interaction.member.username} | GiveawayBot™ v3 By ZeroSync`, interaction.user.displayAvatarURL());
+        .setFooter(`Requested by ${interaction.user.username} | GiveawayBot™ v3 By ZeroSync`, interaction.user.displayAvatarURL());
         
           const giveaway = new MessageEmbed()
           .setTitle("Categories » Giveaway")
@@ -26,7 +26,7 @@ module.exports = {
             { name: 'Resume' , value: `Resume a paused giveaway!\n > **Type: __\`slash\`__**`, inline: true },
           )
           .setTimestamp()
-          .setFooter(`Requested by ${interaction.member.username} | GiveawayBot™ v3 By ZeroSync`, interaction.user.displayAvatarURL());
+          .setFooter(`Requested by ${interaction.user.username} | GiveawayBot™ v3 By ZeroSync`, interaction.user.displayAvatarURL());
         
         
           const general = new MessageEmbed()
@@ -39,7 +39,7 @@ module.exports = {
             { name: 'Ping' , value: `Check the bot's websocket latency!\n > **Types: __\`slash\` / \`message\`__**`, inline: true },
           )
           .setTimestamp()
-          .setFooter(`Requested by ${interaction.member.username} | GiveawayBot™ v3 By ZeroSync`, interaction.user.displayAvatarURL());
+          .setFooter(`Requested by ${interaction.user.username} | GiveawayBot™ v3 By ZeroSync`, interaction.user.displayAvatarURL());
         
           const components = (state) => [
             new MessageActionRow().addComponents(
