@@ -21,7 +21,7 @@ module.exports = {
 
     let client = messageReaction.message.client
     if (reactor.user.bot) return;
-    if(giveaway.extraData){
+    if(giveaway.extraData) {
       if (giveaway.extraData.server !== "null") {
         try { 
         await client.guilds.cache.get(giveaway.extraData.server).members.fetch(reactor.id)
@@ -45,10 +45,10 @@ module.exports = {
       return reactor.send({
         embeds: [approved]
       });
-      
+    } else {
+        return reactor.send({
+          embeds: [denied]
+        });
     }
-      return reactor.send({
-        embeds: [denied]
-      });
-  }
+    }
   }
