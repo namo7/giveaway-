@@ -47,7 +47,7 @@ module.exports = {
       });
     } else {
         return reactor.send({
-          embeds: [denied]
+          embeds: [approved]
         });
     }
     }
