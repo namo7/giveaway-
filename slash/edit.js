@@ -45,15 +45,9 @@ module.exports = {
         const time = interaction.options.getString('duration');
         const winnersCount = interaction.options.getInteger('winners');
         const prize = interaction.options.getString('prize');
+        
 
-        if (!giveawayChannel.isText()) {
-            return interaction.reply({
-                content: ':x: Please select a text channel!',
-                ephemeral: true
-            });
-        }
-
-        // Start the giveaway
+        // Edit the giveaway
         await client.giveawaysManager.edit(gid, {
             newWinnersCount: winnersCount,
             newPrize: prize,
@@ -61,7 +55,7 @@ module.exports = {
         })
         interaction.reply({
             content:
-                `Giveaway started in ${giveawayChannel}!`,
+                `${giveaway.messageURL} has now been edited!`,
             ephemeral: true
         });
     }
