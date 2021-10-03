@@ -46,14 +46,16 @@ module.exports = {
         const winnersCount = interaction.options.getInteger('winners');
         const prize = interaction.options.getString('prize');
         
-
+        interaction.deferReply({
+         ephemeral: true
+        })
         // Edit the giveaway
         await client.giveawaysManager.edit(gid, {
             newWinnersCount: winnersCount,
             newPrize: prize,
             addTime: time
         })
-        interaction.reply({
+        interaction.editReply({
             content:
                 `${giveaway.messageURL} has now been edited!`,
             ephemeral: true
