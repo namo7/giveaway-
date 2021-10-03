@@ -50,11 +50,19 @@ module.exports = {
          ephemeral: true
         })
         // Edit the giveaway
+        try {
         await client.giveawaysManager.edit(gid, {
             newWinnersCount: winnersCount,
             newPrize: prize,
             addTime: time
         })
+        } catch(e) {
+return interaction.editReply({
+            content:
+                `No giveaway found with the given message ID: \`${gid}\``,
+            ephemeral: true
+        });
+        }
         interaction.editReply({
             content:
                 `${giveaway.messageURL} has now been edited!`,
